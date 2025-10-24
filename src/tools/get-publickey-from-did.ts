@@ -1,4 +1,3 @@
-// src/tools/agent/get-publickey-from-did.ts
 import { z } from "zod";
 import bs58 from "bs58";
 import { Context, Tool } from "hedera-agent-kit";
