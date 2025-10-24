@@ -1,0 +1,49 @@
+{
+  "name": "@zkred/hedera-agentid-plugin",
+  "version": "1.0.0",
+  "description": "A Hedera Agent Kit plugin to generate Privado ID DIDs using @zkred/agent-id SDK.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --watch --format cjs,esm --dts",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"No tests yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zkred/zkred-agentid-hedera-plugin.git"
+  },
+  "keywords": [
+    "hedera",
+    "plugin",
+    "agentkit",
+    "zkred",
+    "ssi",
+    "privado-id",
+    "did"
+  ],
+  "author": "Zkred Team <contact@zkred.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zkred/zkred-agentid-hedera-plugin/issues"
+  },
+  "homepage": "https://github.com/Zkred/zkred-agentid-hedera-plugin#readme",
+  "dependencies": {
+    "@hashgraph/sdk": "^2.75.0",
+    "@zkred/agent-id": "^1.1.0",
+    "bs58": "^6.0.0",
+    "crc": "^4.3.2",
+    "hedera-agent-kit": "^3.4.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.6.3"
+  }
+}
