@@ -4,7 +4,7 @@ import { Plugin } from "hedera-agent-kit";
 import generateDidTool, { GENERATE_DID_TOOL } from "./tools/generate-did";
 
 export const zkredAgentIdPlugin: Plugin = {
-  name: "zkred-agent-id",
+  name: "@zkred/hedera-agentid-plugin",
   version: "1.0.0",
   description:
     "Hedera Agent Kit plugin that provides a generate_agent_did tool (Zkred).",
