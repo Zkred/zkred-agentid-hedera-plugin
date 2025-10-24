@@ -7,7 +7,7 @@ import createIdentityTool, { CREATE_IDENTITY_TOOL } from "./tools/create-identit
 import validateAgentTool, { VALIDATE_AGENT_TOOL } from "./tools/validate-agent";
 
 export const zkredAgentIdPlugin: Plugin = {
-  name: "zkred-agent-id",
+  name: "@zkred/hedera-agentid-plugin",
   version: "1.0.0",
   description:
   "Hedera Agent Kit plugin that provides a generate_agent_did tool (Zkred).",
