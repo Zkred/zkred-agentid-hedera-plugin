@@ -14,7 +14,7 @@ import { getETHPublicKeyFromDID } from "./get-publickey-from-did";
 * @param rpcUrl - Optional RPC URL, will use default if not provided
 * @returns Agent details including DID, agent ID, description, and service endpoint
 */
-async function validateAgent(
+export async function validateAgent(
     did: string,
     chainId: 296,
     rpcUrl: string = ""
