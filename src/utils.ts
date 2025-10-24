@@ -8,8 +8,6 @@ export function setRpcUrl(chainId: number, rpcUrl?: string): string {
   if (rpcUrl) return rpcUrl;
   
   switch (chainId) {
-    case 80002: // Polygon Amoy
-      return "https://rpc-amoy.polygon.technology";
     case 296: // Hedera
       return "https://mainnet.hashio.io/api";
     default:

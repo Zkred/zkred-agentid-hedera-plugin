@@ -8,7 +8,7 @@ import { Client } from "@hashgraph/sdk";
  * @param didFull - The complete DID string
  * @returns The Ethereum public key as a hex string, or null if invalid
  */
-function getETHPublicKeyFromDID(didFull: string): string | null {
+export function getETHPublicKeyFromDID(didFull: string): string | null {
   try {
     // Validate DID format and extract Base58 component
     const parts = didFull.split(":");

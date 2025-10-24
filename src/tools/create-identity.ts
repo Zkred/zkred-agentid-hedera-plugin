@@ -4,14 +4,14 @@ import { Client } from "@hashgraph/sdk";
 import { generateDID } from "./generate-did";
 import { setRpcUrl } from "@/utils";
 import identityRegistryABI from "../contracts/IndentityRegistry.json";
-import { IDENTITY_REGISTRY_AMOY, IDENTITY_REGISTRY_HEDERA } from "@/constant";
+import { IDENTITY_REGISTRY_HEDERA } from "@/constant";
 const ethers = require("ethers");
 
 
 /**
  * Create a new identity on the blockchain
  * @param privateKey - Private key (0x-prefixed, 64-hex string)
- * @param chainId - Chain ID (80002 for Amoy, 296 for Hedera)
+ * @param chainId - Chain ID (296 for Hedera)
  * @param description - Agent description
  * @param serviceEndpoint - Service endpoint URL
  * @param rpcUrl - Optional RPC URL
@@ -44,9 +44,8 @@ async function createIdentity(
     const provider = new ethers.JsonRpcProvider(rpcUrl as string);
     const signer = new ethers.Wallet(privateKey, provider);
 
-    // Select registry contract based on chainId
-    let REGISTRY_CONTRACT = IDENTITY_REGISTRY_AMOY;
-    if (chainId === 296) REGISTRY_CONTRACT = IDENTITY_REGISTRY_HEDERA;
+    // Use Hedera registry contract
+    const REGISTRY_CONTRACT = IDENTITY_REGISTRY_HEDERA;
     
     const registry = new ethers.Contract(
       REGISTRY_CONTRACT,
@@ -106,10 +105,10 @@ export const createIdentityParameters = (context: Context = {}) =>
       .number()
       .int()
       .refine(
-        (val) => [80002, 296].includes(val),
-        "Must be a supported chain ID (80002 for Amoy, 296 for Hedera)"
+        (val) => val === 296,
+        "Must be a supported chain ID (296 for Hedera)"
       )
-      .describe("Chain ID (80002 for Amoy, 296 for Hedera)"),
+      .describe("Chain ID (296 for Hedera)"),
     description: z
       .string()
       .min(1)
@@ -130,7 +129,7 @@ Creates a new identity on the blockchain by registering an agent with the identi
 
 Parameters:
 - privateKey: Private key (0x-prefixed, 64-hex string)
-- chainId: Chain ID (80002 for Amoy, 296 for Hedera)
+- chainId: Chain ID (296 for Hedera)
 - description: Agent description
 - serviceEndpoint: Service endpoint URL
 - rpcUrl: Optional RPC URL (automatically set based on chainId if not provided)
