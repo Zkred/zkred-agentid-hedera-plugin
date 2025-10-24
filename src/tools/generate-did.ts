@@ -12,7 +12,7 @@ import { Client } from "@hashgraph/sdk";
  * @param network "amoy" | "main" | ...
  * @returns DID string
  */
-function generateDID(
+export function generateDID(
   ethAddress: string,
   chain: string,
   network: string
