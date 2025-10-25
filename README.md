@@ -367,6 +367,10 @@ const completeResult = await agent.execute({
 
 ### Changelog
 
+#### Version 2.0.1
+
+- **Changed**: Updated the contract address to the latest deployed version for improved stability and compatibility.
+
 #### Version 2.0.0
 
 - **BREAKING**: Updated `create_identity` tool to return `agentId` as string instead of BigInt for better serialization
