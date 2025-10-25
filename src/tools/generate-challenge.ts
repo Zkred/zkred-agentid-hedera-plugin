@@ -8,7 +8,7 @@ import { Client } from "@hashgraph/sdk";
  * @param length The length of the random string to generate
  * @returns Random string containing alphanumeric characters
  */
-export function generateSignature(length: number): string {
+export function generateChallengExecute(length: number): string {
   if (!length || length <= 0) {
     throw new Error("length is required and must be greater than 0");
   }
@@ -23,7 +23,7 @@ export function generateSignature(length: number): string {
 }
 
 /* Zod schema for parameters */
-export const generateSignatureParameters = (context: Context = {}) =>
+export const generateChallengExecuteParameters = (context: Context = {}) =>
   z.object({
     length: z
       .number()
@@ -32,7 +32,7 @@ export const generateSignatureParameters = (context: Context = {}) =>
       .describe("Length of the random string to generate"),
   });
 
-const generateSignaturePrompt = (context: Context = {}) => `
+const generateChallengExecutePrompt = (context: Context = {}) => `
 Generates a random string of specified length using alphanumeric characters.
 
 Parameters:
@@ -41,28 +41,28 @@ Parameters:
 Returns: Random string containing uppercase letters, lowercase letters, and digits
 `;
 
-const generateSignatureExecute = async (
+const generateChallengExecuteExecute = async (
   client: Client,
   context: Context,
-  params: z.infer<ReturnType<typeof generateSignatureParameters>>
+  params: z.infer<ReturnType<typeof generateChallengExecuteParameters>>
 ) => {
   try {
     const { length } = params;
-    const signature = generateSignature(length);
+    const signature = generateChallengExecute(length);
     return { success: true, signature };
   } catch (err: any) {
     return { success: false, error: err.message || String(err) };
   }
 };
 
-export const GENERATE_SIGNATURE_TOOL = "generate_random_signature";
+export const GENERATE_CHALLENGE_TOOL = "generate_random_challenge";
 
 const tool = (context: Context): Tool => ({
-  method: GENERATE_SIGNATURE_TOOL,
-  name: "Generate Random Signature",
-  description: generateSignaturePrompt(context),
-  parameters: generateSignatureParameters(context) as any,
-  execute: generateSignatureExecute,
+  method: GENERATE_CHALLENGE_TOOL,
+  name: "Generate Random Challenge",
+  description: generateChallengExecutePrompt(context),
+  parameters: generateChallengExecuteParameters(context) as any,
+  execute: generateChallengExecuteExecute,
 });
 
 export default tool;
