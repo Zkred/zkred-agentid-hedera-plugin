@@ -120,7 +120,7 @@ const result = await agent.execute({
     serviceEndpoint: "https://myagent.com",
   },
 });
-// Returns: { success: true, txHash: "0x...", did: "did:...", agentId: 123 }
+// Returns: { success: true, txHash: "0x...", did: "did:...", agentId: "123", publicKey: "0x..." }
 ```
 
 #### 4. Validate Agent
@@ -296,6 +296,7 @@ const identityResult = await agent.execute({
     serviceEndpoint: "https://myagent.com",
   },
 });
+// identityResult now includes: { txHash, did, agentId, publicKey }
 
 // 3. Validate the created agent
 const validationResult = await agent.execute({
@@ -365,6 +366,14 @@ const completeResult = await agent.execute({
 - `axios`: HTTP client for agent-to-agent communication
 
 ### Changelog
+
+#### Version 2.0.0
+
+- **BREAKING**: Updated `create_identity` tool to return `agentId` as string instead of BigInt for better serialization
+- **Added**: `create_identity` tool now returns `publicKey` in the response for enhanced identity management
+- **Fixed**: Resolved BigInt serialization issues in agent responses
+- **Enhanced**: Improved type safety and compatibility with agent frameworks
+- **Major**: Significant improvements to identity management and agent integration
 
 #### Version 1.0.3
 

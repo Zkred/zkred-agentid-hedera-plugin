@@ -7,7 +7,6 @@ import identityRegistryABI from "../contracts/IndentityRegistry.json";
 import { IDENTITY_REGISTRY_HEDERA } from "@/constant";
 const ethers = require("ethers");
 
-
 /**
  * Create a new identity on the blockchain
  * @param privateKey - Private key (0x-prefixed, 64-hex string)
@@ -28,7 +27,8 @@ async function createIdentity(
   did: string;
   description: string;
   serviceEndpoint: string;
-  agentId: bigint;
+  agentId: string;
+  publicKey: string;
 }> {
   try {
     // Set RPC URL if not provided based on chainId
@@ -46,7 +46,7 @@ async function createIdentity(
 
     // Use Hedera registry contract
     const REGISTRY_CONTRACT = IDENTITY_REGISTRY_HEDERA;
-    
+
     const registry = new ethers.Contract(
       REGISTRY_CONTRACT,
       identityRegistryABI.abi,
@@ -59,10 +59,11 @@ async function createIdentity(
     try {
       agentDetails = await registry.getAgentByAddress(publicKey);
     } catch (err: any) {
-      console.log("Error ==> ", err?.message);
+      console.log("agent not found now registering");
     }
 
     if (agentDetails?.length) {
+      console.log(agentDetails);
       throw new Error("Agent already registered");
     }
 
@@ -74,7 +75,7 @@ async function createIdentity(
 
     await tx.wait();
     await new Promise((resolve) => setTimeout(resolve, 5000));
-    
+
     // Get updated agent details
     const agent = await registry.getAgentByAddress(publicKey);
 
@@ -83,7 +84,8 @@ async function createIdentity(
       did,
       description,
       serviceEndpoint,
-      agentId: BigInt(agent[1]),
+      agentId: BigInt(agent[1]).toString(),
+      publicKey,
     };
   } catch (err: any) {
     const message = err?.message || String(err);
@@ -109,19 +111,15 @@ export const createIdentityParameters = (context: Context = {}) =>
         "Must be a supported chain ID (296 for Hedera)"
       )
       .describe("Chain ID (296 for Hedera)"),
-    description: z
-      .string()
-      .min(1)
-      .describe("Agent description"),
-    serviceEndpoint: z
-      .string()
-      .url()
-      .describe("Service endpoint URL"),
+    description: z.string().min(1).describe("Agent description"),
+    serviceEndpoint: z.string().url().describe("Service endpoint URL"),
     rpcUrl: z
       .string()
       .url()
       .optional()
-      .describe("Optional RPC URL (will be set automatically based on chainId if not provided)"),
+      .describe(
+        "Optional RPC URL (will be set automatically based on chainId if not provided)"
+      ),
   });
 
 const createIdentityPrompt = (context: Context = {}) => `
@@ -143,7 +141,8 @@ const createIdentityExecute = async (
   params: z.infer<ReturnType<typeof createIdentityParameters>>
 ) => {
   try {
-    const { privateKey, chainId, description, serviceEndpoint, rpcUrl } = params;
+    const { privateKey, chainId, description, serviceEndpoint, rpcUrl } =
+      params;
     const result = await createIdentity(
       privateKey,
       chainId,
