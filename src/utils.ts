@@ -6,10 +6,10 @@
  */
 export function setRpcUrl(chainId: number, rpcUrl?: string): string {
   if (rpcUrl) return rpcUrl;
-  
+
   switch (chainId) {
     case 296: // Hedera
-      return "https://mainnet.hashio.io/api";
+      return "https://testnet.hashio.io/api";
     default:
       throw new Error(`Unsupported chainId: ${chainId}`);
   }
