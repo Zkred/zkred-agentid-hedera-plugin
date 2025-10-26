@@ -46,7 +46,7 @@ This plugin provides 9 comprehensive tools for complete identity management and 
 | `validate_agent`                  | Validates an agent's existence and retrieves details from the registry       | `validate_agent`                  |
 | `get_agent_from_service_endpoint` | Gets agent details by looking up the service endpoint in the registry        | `get_agent_from_service_endpoint` |
 | `verify_signature`                | Verifies a signature against a DID                                           | `verify_signature`                |
-| `generate_signature`              | Generates a signature for a message using a private key                      | `generate_signature`              |
+| `generate_challenge`              | Generates a random challenge string of specified length                      | `generate_challenge`              |
 | `initiate_agent_handshake`        | Initiates a handshake between two agents                                     | `initiate_agent_handshake`        |
 | `complete_agent_handshake`        | Completes a handshake by signing and sending challenge response              | `complete_agent_handshake`        |
 
@@ -195,26 +195,24 @@ const result = await agent.execute({
 // Returns: { success: true, isValid: true }
 ```
 
-#### 7. Generate Signature
+#### 7. Generate Challenge
 
-Generates a signature for a message using a private key.
+Generates a random challenge string of specified length using alphanumeric characters.
 
 **Parameters:**
 
-- `privateKey` (string, required): Private key for signing
-- `message` (string, required): Message to sign
+- `length` (number, required): Length of the random string to generate (must be positive integer)
 
 **Example:**
 
 ```javascript
 const result = await agent.execute({
-  method: "generate_signature",
+  method: "generate_challenge",
   params: {
-    privateKey: "0x1234567890abcdef...",
-    message: "Hello World",
+    length: 32,
   },
 });
-// Returns: { success: true, signature: "0x..." }
+// Returns: { success: true, challenge: "aBc123..." }
 ```
 
 #### 8. Initiate Agent Handshake
@@ -348,7 +346,7 @@ const completeResult = await agent.execute({
 - **Blockchain Registry**: Create and manage agent identities on Hedera blockchain
 - **Agent Validation**: Verify agent existence and retrieve detailed information
 - **Secure Handshake Protocol**: Initiate and complete secure agent-to-agent handshakes
-- **Digital Signatures**: Generate and verify cryptographic signatures
+- **Challenge Generation**: Generate random challenge strings for secure authentication
 - **Public Key Management**: Extract and manage public keys from DIDs
 - **Verifiable Credentials**: Support for self-sovereign identity (SSI) workflows
 - **Hedera Integration**: Seamless integration with Hedera Agent Kit
@@ -366,6 +364,14 @@ const completeResult = await agent.execute({
 - `axios`: HTTP client for agent-to-agent communication
 
 ### Changelog
+
+#### Version 4.0.0
+
+- **BREAKING**: Renamed `generate_signature` tool to `generate_challenge` for better semantic clarity
+- **Changed**: Updated tool functionality from generating signatures to generating random challenge strings
+- **Updated**: Tool now accepts `length` parameter instead of `privateKey` and `message` parameters
+- **Enhanced**: Improved tool description and documentation to reflect new challenge generation purpose
+- **Updated**: All documentation, examples, and references updated to reflect the tool rename
 
 #### Version 2.0.1
 
@@ -389,7 +395,7 @@ const completeResult = await agent.execute({
 
 - **Added**: Complete identity management suite with 9 comprehensive tools
 - **Added**: Agent handshake protocol for secure agent-to-agent communication
-- **Added**: Digital signature generation and verification capabilities
+- **Added**: Challenge generation and signature verification capabilities
 - **Added**: Public key extraction from DIDs
 - **Added**: Agent validation and registry management
 - **Added**: Blockchain identity creation on Hedera network
