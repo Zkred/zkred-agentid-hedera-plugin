@@ -15,9 +15,9 @@ import getAgentFromServiceEndpointTool, {
 import verifySignatureTool, {
   VERIFY_SIGNATURE_TOOL,
 } from "./tools/verify-signature";
-import generateSignatureTool, {
-  GENERATE_SIGNATURE_TOOL,
-} from "./tools/generate-signature";
+import generateChallengeTool, {
+  GENERATE_CHALLENGE_TOOL,
+} from "./tools/generate-challenge";
 import initiateHandshakeTool, {
   INITIATE_HANDSHAKE_TOOL,
 } from "./tools/initiate-handshake";
@@ -37,7 +37,7 @@ export const zkredAgentIdPlugin: Plugin = {
     validateAgentTool(context),
     getAgentFromServiceEndpointTool(context),
     verifySignatureTool(context),
-    generateSignatureTool(context),
+    generateChallengeTool(context),
     initiateHandshakeTool(context),
     completeHandshakeTool(context),
   ],
@@ -50,7 +50,7 @@ export const zkredAgentIdToolNames = {
   VALIDATE_AGENT_TOOL,
   GET_AGENT_FROM_SERVICE_ENDPOINT_TOOL,
   VERIFY_SIGNATURE_TOOL,
-  GENERATE_SIGNATURE_TOOL,
+  GENERATE_CHALLENGE_TOOL,
   INITIATE_HANDSHAKE_TOOL,
   COMPLETE_HANDSHAKE_TOOL,
 } as const;
