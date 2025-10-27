@@ -1,6 +1,6 @@
 {
   "name": "@zkred/hedera-agentid-plugin",
-  "version": "4.0.0",
+  "version": "6.0.0",
   "description": "A Hedera Agent Kit plugin to generate Privado ID DIDs using @zkred/agent-id SDK.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

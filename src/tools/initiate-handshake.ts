@@ -57,10 +57,15 @@ export async function initiateHandshake(
     throw new Error("Receiver agent not found");
   }
 
+  console.log(
+    "Receiver agent service endpoint:",
+    receiverAgent?.serviceEndPoint
+  );
+
   // Call receiver agent's /initiate url
   try {
     const response = await axios.post(
-      `${receiverAgent?.serviceEndPoint}/initiate`,
+      `${receiverAgent?.serviceEndPoint}initiate`,
       {
         sessionId,
         initiatorDid,
@@ -81,17 +86,11 @@ export async function initiateHandshake(
 /* Zod schema for parameters */
 export const initiateHandshakeParameters = (context: Context = {}) =>
   z.object({
-    initiatorDid: z
-      .string()
-      .min(1)
-      .describe("DID of the initiating agent"),
+    initiatorDid: z.string().min(1).describe("DID of the initiating agent"),
     initiatorChainId: z
       .literal(296)
       .describe("Chain ID for initiator (296 for Hedera)"),
-    receiverDid: z
-      .string()
-      .min(1)
-      .describe("DID of the receiving agent"),
+    receiverDid: z.string().min(1).describe("DID of the receiving agent"),
     receiverChainId: z
       .literal(296)
       .describe("Chain ID for receiver (296 for Hedera)"),
