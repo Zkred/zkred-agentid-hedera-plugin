@@ -24,6 +24,10 @@ import initiateHandshakeTool, {
 import completeHandshakeTool, {
   COMPLETE_HANDSHAKE_TOOL,
 } from "./tools/complete-handshake";
+import registerAgentTool, { REGISTER_AGENT_TOOL } from "./tools/register-agent";
+import registerAgentWithMetadataTool, {
+  REGISTER_AGENT_WITH_METADATA_TOOL,
+} from "./tools/register-agent-with-metadata";
 
 export const zkredAgentIdPlugin: Plugin = {
   name: "@zkred/hedera-agentid-plugin",
@@ -40,6 +44,8 @@ export const zkredAgentIdPlugin: Plugin = {
     generateChallengeTool(context),
     initiateHandshakeTool(context),
     completeHandshakeTool(context),
+    registerAgentTool(context),
+    registerAgentWithMetadataTool(context),
   ],
 };
 
@@ -53,6 +59,8 @@ export const zkredAgentIdToolNames = {
   GENERATE_CHALLENGE_TOOL,
   INITIATE_HANDSHAKE_TOOL,
   COMPLETE_HANDSHAKE_TOOL,
+  REGISTER_AGENT_TOOL,
+  REGISTER_AGENT_WITH_METADATA_TOOL,
 } as const;
 
 export default { zkredAgentIdPlugin, zkredAgentIdToolNames };

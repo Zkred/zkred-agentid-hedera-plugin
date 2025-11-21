@@ -4,11 +4,25 @@ A comprehensive Hedera Agent Kit plugin that provides a complete identity manage
 
 The plugin provides seamless integration between Hedera's distributed ledger technology and Zkred's identity management system, offering a full suite of tools for agent identity creation, validation, handshake protocols, and signature verification.
 
+**Now compatible with ERC 8004 (Identity Registry) contracts deployed on Hedera Testnet**, providing enhanced identity management capabilities with token URI support and metadata storage.
+
 ### Installation
 
 ```bash
 npm install @zkred/hedera-agentid-plugin
 ```
+
+### ERC 8004 Compatibility
+
+This plugin now supports **ERC 8004 (Identity Registry)** standard contracts deployed on Hedera Testnet. The Identity Registry contract provides:
+
+- **ERC 721 Token-based Identity**: Each agent identity is represented as an NFT token
+- **Token URI Support**: Optional token URI for each agent identity
+- **Metadata Storage**: Key-value metadata storage for each agent
+- **Upgradeable Contract**: UUPS upgradeable contract pattern for future enhancements
+- **Contract Address**: `0x4c74ebd72921d537159ed2053f46c12a7d8e5923` (Hedera Testnet)
+
+The new `register_agent` and `register_agent_with_metadata` tools interact directly with the ERC 8004 Identity Registry contract, providing enhanced identity management capabilities.
 
 ### Usage
 
@@ -36,13 +50,15 @@ const hederaAgentToolkit = new HederaLangchainToolkit({
 
 ### Available Tools
 
-This plugin provides 9 comprehensive tools for complete identity management and agent interaction:
+This plugin provides 11 comprehensive tools for complete identity management and agent interaction:
 
 | Tool Name                         | Description                                                                  | Method                            |
 | --------------------------------- | ---------------------------------------------------------------------------- | --------------------------------- |
 | `generate_agent_did`              | Generates a Privado ID DID from an Ethereum address using the iden3 protocol | `generate_agent_did`              |
 | `get_publickey_from_did`          | Extracts Ethereum public key from a DID string                               | `get_publickey_from_did`          |
 | `create_identity`                 | Creates a new agent identity on the blockchain registry                      | `create_identity`                 |
+| `register_agent`                  | Registers an agent on ERC 8004 Identity Registry (with or without token URI) | `register_agent`                  |
+| `register_agent_with_metadata`    | Registers an agent with token URI and metadata on ERC 8004 Identity Registry | `register_agent_with_metadata`    |
 | `validate_agent`                  | Validates an agent's existence and retrieves details from the registry       | `validate_agent`                  |
 | `get_agent_from_service_endpoint` | Gets agent details by looking up the service endpoint in the registry        | `get_agent_from_service_endpoint` |
 | `verify_signature`                | Verifies a signature against a DID                                           | `verify_signature`                |
@@ -123,7 +139,73 @@ const result = await agent.execute({
 // Returns: { success: true, txHash: "0x...", did: "did:...", agentId: "123", publicKey: "0x..." }
 ```
 
-#### 4. Validate Agent
+#### 4. Register Agent (ERC 8004)
+
+Registers an agent on the ERC 8004 Identity Registry contract. Can register with or without a token URI.
+
+**Parameters:**
+
+- `privateKey` (string, required): Private key (0x-prefixed, 64-hex string)
+- `tokenURI` (string, optional): Optional token URI for the agent
+- `chainId` (number, optional): Chain ID (296 for Hedera, defaults to 296)
+- `rpcUrl` (string, optional): Optional RPC URL (auto-set based on chainId if not provided)
+
+**Example:**
+
+```javascript
+// Register without token URI
+const result = await agent.execute({
+  method: "register_agent",
+  params: {
+    privateKey: "0x1234567890abcdef...",
+  },
+});
+// Returns: { success: true, txHash: "0x...", agentId: "123" }
+
+// Register with token URI
+const resultWithUri = await agent.execute({
+  method: "register_agent",
+  params: {
+    privateKey: "0x1234567890abcdef...",
+    tokenURI: "https://example.com/metadata/123",
+  },
+});
+// Returns: { success: true, txHash: "0x...", agentId: "123", tokenURI: "https://example.com/metadata/123" }
+```
+
+#### 5. Register Agent With Metadata (ERC 8004)
+
+Registers an agent on the ERC 8004 Identity Registry contract with token URI and metadata.
+
+**Parameters:**
+
+- `privateKey` (string, required): Private key (0x-prefixed, 64-hex string)
+- `tokenURI` (string, required): Token URI for the agent
+- `metadata` (array, required): Array of metadata entries, each with:
+  - `key` (string): Metadata key
+  - `value` (string): Metadata value (will be converted to bytes)
+- `chainId` (number, optional): Chain ID (296 for Hedera, defaults to 296)
+- `rpcUrl` (string, optional): Optional RPC URL (auto-set based on chainId if not provided)
+
+**Example:**
+
+```javascript
+const result = await agent.execute({
+  method: "register_agent_with_metadata",
+  params: {
+    privateKey: "0x1234567890abcdef...",
+    tokenURI: "https://example.com/metadata/123",
+    metadata: [
+      { key: "name", value: "My Agent" },
+      { key: "description", value: "A sample agent" },
+      { key: "version", value: "1.0.0" },
+    ],
+  },
+});
+// Returns: { success: true, txHash: "0x...", agentId: "123", tokenURI: "...", metadata: [...] }
+```
+
+#### 6. Validate Agent
 
 Validates an agent's existence and retrieves details from the registry.
 
@@ -146,7 +228,7 @@ const result = await agent.execute({
 // Returns: { success: true, data: { did, agentId, description, serviceEndPoint } }
 ```
 
-#### 5. Get Agent From Service Endpoint
+#### 7. Get Agent From Service Endpoint
 
 Gets agent details by looking up the service endpoint in the identity registry.
 
@@ -169,7 +251,7 @@ const result = await agent.execute({
 // Returns: { success: true, data: { did, agentId, description, serviceEndPoint } }
 ```
 
-#### 6. Verify Signature
+#### 8. Verify Signature
 
 Verifies a signature against a DID.
 
@@ -195,7 +277,7 @@ const result = await agent.execute({
 // Returns: { success: true, isValid: true }
 ```
 
-#### 7. Generate Challenge
+#### 9. Generate Challenge
 
 Generates a random challenge string of specified length using alphanumeric characters.
 
@@ -215,7 +297,7 @@ const result = await agent.execute({
 // Returns: { success: true, challenge: "aBc123..." }
 ```
 
-#### 8. Initiate Agent Handshake
+#### 10. Initiate Agent Handshake
 
 Initiates a handshake between two agents.
 
@@ -243,7 +325,7 @@ const result = await agent.execute({
 // Returns: { success: true, handshake: { sessionId, receiverAgentCallbackEndPoint, challenge } }
 ```
 
-#### 9. Complete Agent Handshake
+#### 11. Complete Agent Handshake
 
 Completes a handshake by signing and sending challenge response.
 
@@ -296,6 +378,30 @@ const identityResult = await agent.execute({
 });
 // identityResult now includes: { txHash, did, agentId, publicKey }
 
+// 2a. Register agent on ERC 8004 Identity Registry (alternative approach)
+const registerResult = await agent.execute({
+  method: "register_agent",
+  params: {
+    privateKey: "0x1234567890abcdef...",
+    tokenURI: "https://example.com/metadata/agent123",
+  },
+});
+// registerResult includes: { txHash, agentId, tokenURI }
+
+// 2b. Register agent with metadata on ERC 8004 Identity Registry
+const registerWithMetadataResult = await agent.execute({
+  method: "register_agent_with_metadata",
+  params: {
+    privateKey: "0x1234567890abcdef...",
+    tokenURI: "https://example.com/metadata/agent123",
+    metadata: [
+      { key: "name", value: "My Agent" },
+      { key: "description", value: "A sample agent" },
+    ],
+  },
+});
+// registerWithMetadataResult includes: { txHash, agentId, tokenURI, metadata }
+
 // 3. Validate the created agent
 const validationResult = await agent.execute({
   method: "validate_agent",
@@ -344,6 +450,9 @@ const completeResult = await agent.execute({
 - **Cross-chain Identity**: Generate DIDs that work across different blockchain networks
 - **Ethereum Integration**: Convert Ethereum addresses to Privado ID format
 - **Blockchain Registry**: Create and manage agent identities on Hedera blockchain
+- **ERC 8004 Compatibility**: Full support for ERC 8004 Identity Registry standard on Hedera Testnet
+- **Token URI Support**: Register agents with optional token URIs for metadata storage
+- **Metadata Management**: Store and manage custom metadata for agent identities
 - **Agent Validation**: Verify agent existence and retrieve detailed information
 - **Secure Handshake Protocol**: Initiate and complete secure agent-to-agent handshakes
 - **Challenge Generation**: Generate random challenge strings for secure authentication
@@ -364,6 +473,19 @@ const completeResult = await agent.execute({
 - `axios`: HTTP client for agent-to-agent communication
 
 ### Changelog
+
+#### Version 7.0.0
+
+- **BREAKING**: Migrated to ERC 8004 (Identity Registry) compatible contracts deployed on Hedera Testnet
+- **Added**: `register_agent` tool for registering agents with or without token URI on ERC 8004 Identity Registry
+- **Added**: `register_agent_with_metadata` tool for registering agents with token URI and metadata on ERC 8004 Identity Registry
+- **Enhanced**: Support for ERC 721 token-based identity management with URI storage
+- **Enhanced**: Metadata storage capabilities for agent identity management
+- **Changed**: Updated contract interaction to use new IdentityRegistryUpgradeable contract
+- **Changed**: Made `chainId` and `rpcUrl` optional parameters (defaults to Hedera Testnet - chainId 296)
+- **Enhanced**: Improved flexibility with optional token URI registration
+- **Updated**: Contract address updated to ERC 8004 compatible deployment on Hedera Testnet
+- **Documentation**: Updated README with new tools and ERC 8004 compatibility information
 
 #### Version 4.0.0
 
