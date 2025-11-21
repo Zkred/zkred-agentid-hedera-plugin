@@ -474,6 +474,12 @@ const completeResult = await agent.execute({
 
 ### Changelog
 
+#### Version 7.0.2
+
+- **Fixed**: Added `.nullable()` to all optional fields to comply with OpenAI API structured outputs requirements
+- **Fixed**: Resolved warnings about optional fields requiring `.nullable()` for proper JSON Schema serialization
+- **Enhanced**: All optional parameters now properly support both `null` and `undefined` values
+
 #### Version 7.0.1
 
 - **Fixed**: Resolved schema serialization issue by downgrading Zod from v4.1.12 to v3.25.76 to match hedera-agent-kit compatibility

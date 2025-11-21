@@ -96,10 +96,12 @@ export const initiateHandshakeParameters = (context: Context = {}) =>
       .describe("Chain ID for receiver (296 for Hedera)"),
     initiatorRpcUrl: z
       .string()
+      .nullable()
       .optional()
       .describe("Optional RPC URL for initiator"),
     receiverRpcUrl: z
       .string()
+      .nullable()
       .optional()
       .describe("Optional RPC URL for receiver"),
   });

@@ -68,6 +68,7 @@ export const validateAgentParameters = (context: Context = {}) =>
     .describe("The chain ID (296 for Hedera)"),
     rpcUrl: z
     .string()
+    .nullable()
     .optional()
     .describe("Optional RPC URL, will use default if not provided"),
 });

@@ -141,11 +141,13 @@ export const registerAgentWithMetadataParameters = (context: Context = {}) =>
         (val) => val === 296,
         "Must be a supported chain ID (296 for Hedera)"
       )
+      .nullable()
       .optional()
       .describe("Chain ID (296 for Hedera, defaults to 296 if not provided)"),
     rpcUrl: z
       .string()
       .url()
+      .nullable()
       .optional()
       .describe(
         "Optional RPC URL (will be set automatically based on chainId if not provided)"

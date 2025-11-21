@@ -116,6 +116,7 @@ export const createIdentityParameters = (context: Context = {}) =>
     rpcUrl: z
       .string()
       .url()
+      .nullable()
       .optional()
       .describe(
         "Optional RPC URL (will be set automatically based on chainId if not provided)"

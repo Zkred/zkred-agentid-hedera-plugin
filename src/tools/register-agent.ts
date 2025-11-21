@@ -110,15 +110,18 @@ export const registerAgentParameters = (context: Context = {}) =>
         (val) => val === 296,
         "Must be a supported chain ID (296 for Hedera)"
       )
+      .nullable()
       .optional()
       .describe("Chain ID (296 for Hedera, defaults to 296 if not provided)"),
     tokenURI: z
       .string()
+      .nullable()
       .optional()
       .describe("Optional token URI for the agent"),
     rpcUrl: z
       .string()
       .url()
+      .nullable()
       .optional()
       .describe(
         "Optional RPC URL (will be set automatically based on chainId if not provided)"

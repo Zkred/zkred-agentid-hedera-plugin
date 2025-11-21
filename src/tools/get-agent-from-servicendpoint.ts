@@ -62,6 +62,7 @@ export const getAgentFromServiceEndpointParameters = (context: Context = {}) =>
     chainId: z.literal(296).describe("The chain ID (296 for Hedera)"),
     rpcUrl: z
       .string()
+      .nullable()
       .optional()
       .describe("Optional RPC URL, will use default if not provided"),
   });
