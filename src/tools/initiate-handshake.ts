@@ -148,12 +148,15 @@ const initiateHandshakeExecute = async (
 
 export const INITIATE_HANDSHAKE_TOOL = "initiate_agent_handshake";
 
-const tool = (context: Context): Tool => ({
-  method: INITIATE_HANDSHAKE_TOOL,
-  name: "Initiate Agent Handshake",
-  description: initiateHandshakePrompt(context),
-  parameters: initiateHandshakeParameters(context) as any,
-  execute: initiateHandshakeExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = initiateHandshakeParameters(context);
+  return {
+    method: INITIATE_HANDSHAKE_TOOL,
+    name: "Initiate Agent Handshake",
+    description: initiateHandshakePrompt(context),
+    parameters: schema as any,
+    execute: initiateHandshakeExecute,
+  };
+};
 
 export default tool;

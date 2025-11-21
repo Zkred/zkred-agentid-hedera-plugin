@@ -117,12 +117,15 @@ const getAgentFromServiceEndpointExecute = async (
 export const GET_AGENT_FROM_SERVICE_ENDPOINT_TOOL =
   "get_agent_from_service_endpoint";
 
-const tool = (context: Context): Tool => ({
-  method: GET_AGENT_FROM_SERVICE_ENDPOINT_TOOL,
-  name: "Get Agent From Service Endpoint",
-  description: getAgentFromServiceEndpointPrompt(context),
-  parameters: getAgentFromServiceEndpointParameters(context) as any,
-  execute: getAgentFromServiceEndpointExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = getAgentFromServiceEndpointParameters(context);
+  return {
+    method: GET_AGENT_FROM_SERVICE_ENDPOINT_TOOL,
+    name: "Get Agent From Service Endpoint",
+    description: getAgentFromServiceEndpointPrompt(context),
+    parameters: schema as any,
+    execute: getAgentFromServiceEndpointExecute,
+  };
+};
 
 export default tool;

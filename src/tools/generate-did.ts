@@ -85,12 +85,16 @@ const generateDidExecute = async (
 
 export const GENERATE_DID_TOOL = "generate_agent_did";
 
-const tool = (context: Context): Tool => ({
-  method: GENERATE_DID_TOOL,
-  name: "Generate Agent DID",
-  description: generateDidPrompt(context),
-  parameters: generateDidParameters(context) as any,
-  execute: generateDidExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = generateDidParameters(context);
+  // Ensure schema is properly formatted as a ZodObject
+  return {
+    method: GENERATE_DID_TOOL,
+    name: "Generate Agent DID",
+    description: generateDidPrompt(context),
+    parameters: schema as any,
+    execute: generateDidExecute,
+  };
+};
 
 export default tool;

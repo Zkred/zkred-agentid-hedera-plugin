@@ -153,12 +153,15 @@ const registerAgentExecute = async (
 
 export const REGISTER_AGENT_TOOL = "register_agent";
 
-const tool = (context: Context): Tool => ({
-  method: REGISTER_AGENT_TOOL,
-  name: "Register Agent",
-  description: registerAgentPrompt(context),
-  parameters: registerAgentParameters(context) as any,
-  execute: registerAgentExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = registerAgentParameters(context);
+  return {
+    method: REGISTER_AGENT_TOOL,
+    name: "Register Agent",
+    description: registerAgentPrompt(context),
+    parameters: schema as any,
+    execute: registerAgentExecute,
+  };
+};
 
 export default tool;

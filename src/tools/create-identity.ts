@@ -158,12 +158,15 @@ const createIdentityExecute = async (
 
 export const CREATE_IDENTITY_TOOL = "create_identity";
 
-const tool = (context: Context): Tool => ({
-  method: CREATE_IDENTITY_TOOL,
-  name: "Create Identity",
-  description: createIdentityPrompt(context),
-  parameters: createIdentityParameters(context) as any,
-  execute: createIdentityExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = createIdentityParameters(context);
+  return {
+    method: CREATE_IDENTITY_TOOL,
+    name: "Create Identity",
+    description: createIdentityPrompt(context),
+    parameters: schema as any,
+    execute: createIdentityExecute,
+  };
+};
 
 export default tool;

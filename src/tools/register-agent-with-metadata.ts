@@ -187,12 +187,15 @@ const registerAgentWithMetadataExecute = async (
 
 export const REGISTER_AGENT_WITH_METADATA_TOOL = "register_agent_with_metadata";
 
-const tool = (context: Context): Tool => ({
-  method: REGISTER_AGENT_WITH_METADATA_TOOL,
-  name: "Register Agent With Metadata",
-  description: registerAgentWithMetadataPrompt(context),
-  parameters: registerAgentWithMetadataParameters(context) as any,
-  execute: registerAgentWithMetadataExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = registerAgentWithMetadataParameters(context);
+  return {
+    method: REGISTER_AGENT_WITH_METADATA_TOOL,
+    name: "Register Agent With Metadata",
+    description: registerAgentWithMetadataPrompt(context),
+    parameters: schema as any,
+    execute: registerAgentWithMetadataExecute,
+  };
+};
 
 export default tool;

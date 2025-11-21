@@ -119,12 +119,15 @@ const validateAgentExecute = async (
 
 export const VALIDATE_AGENT_TOOL = "validate_agent";
 
-const tool = (context: Context): Tool => ({
+const tool = (context: Context): Tool => {
+  const schema = validateAgentParameters(context);
+  return {
     method: VALIDATE_AGENT_TOOL,
     name: "Validate Agent",
     description: validateAgentPrompt(context),
-    parameters: validateAgentParameters(context) as any,
+    parameters: schema as any,
     execute: validateAgentExecute,
-});
+  };
+};
 
 export default tool;

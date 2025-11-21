@@ -57,12 +57,15 @@ const generateChallengExecuteExecute = async (
 
 export const GENERATE_CHALLENGE_TOOL = "generate_random_challenge";
 
-const tool = (context: Context): Tool => ({
-  method: GENERATE_CHALLENGE_TOOL,
-  name: "Generate Random Challenge",
-  description: generateChallengExecutePrompt(context),
-  parameters: generateChallengExecuteParameters(context) as any,
-  execute: generateChallengExecuteExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = generateChallengExecuteParameters(context);
+  return {
+    method: GENERATE_CHALLENGE_TOOL,
+    name: "Generate Random Challenge",
+    description: generateChallengExecutePrompt(context),
+    parameters: schema as any,
+    execute: generateChallengExecuteExecute,
+  };
+};
 
 export default tool;

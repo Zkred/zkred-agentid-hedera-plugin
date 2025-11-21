@@ -474,6 +474,13 @@ const completeResult = await agent.execute({
 
 ### Changelog
 
+#### Version 7.0.1
+
+- **Fixed**: Resolved schema serialization issue by downgrading Zod from v4.1.12 to v3.25.76 to match hedera-agent-kit compatibility
+- **Fixed**: All tools now use consistent schema formatting pattern for proper JSON Schema serialization
+- **Fixed**: Resolved "type: None instead of type: object" schema validation error
+- **Enhanced**: Improved schema consistency across all 11 tools
+
 #### Version 7.0.0
 
 - **BREAKING**: Migrated to ERC 8004 (Identity Registry) compatible contracts deployed on Hedera Testnet

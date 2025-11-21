@@ -84,12 +84,15 @@ const getPublicKeyFromDidExecute = async (
 
 export const GET_PUBLICKEY_FROM_DID_TOOL = "get_publickey_from_did";
 
-const tool = (context: Context): Tool => ({
-  method: GET_PUBLICKEY_FROM_DID_TOOL,
-  name: "Get Public Key from DID",
-  description: getPublicKeyFromDidPrompt(context),
-  parameters: getPublicKeyFromDidParameters(context) as any,
-  execute: getPublicKeyFromDidExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = getPublicKeyFromDidParameters(context);
+  return {
+    method: GET_PUBLICKEY_FROM_DID_TOOL,
+    name: "Get Public Key from DID",
+    description: getPublicKeyFromDidPrompt(context),
+    parameters: schema as any,
+    execute: getPublicKeyFromDidExecute,
+  };
+};
 
 export default tool;

@@ -103,12 +103,15 @@ const completeHandshakeExecute = async (
 
 export const COMPLETE_HANDSHAKE_TOOL = "complete_agent_handshake";
 
-const tool = (context: Context): Tool => ({
-  method: COMPLETE_HANDSHAKE_TOOL,
-  name: "Complete Agent Handshake",
-  description: completeHandshakePrompt(context),
-  parameters: completeHandshakeParameters(context) as any,
-  execute: completeHandshakeExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = completeHandshakeParameters(context);
+  return {
+    method: COMPLETE_HANDSHAKE_TOOL,
+    name: "Complete Agent Handshake",
+    description: completeHandshakePrompt(context),
+    parameters: schema as any,
+    execute: completeHandshakeExecute,
+  };
+};
 
 export default tool;

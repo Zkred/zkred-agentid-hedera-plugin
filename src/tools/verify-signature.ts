@@ -82,12 +82,15 @@ const verifySignatureExecute = async (
 
 export const VERIFY_SIGNATURE_TOOL = "verify_signature";
 
-const tool = (context: Context): Tool => ({
-  method: VERIFY_SIGNATURE_TOOL,
-  name: "Verify Signature",
-  description: verifySignaturePrompt(context),
-  parameters: verifySignatureParameters(context) as any,
-  execute: verifySignatureExecute,
-});
+const tool = (context: Context): Tool => {
+  const schema = verifySignatureParameters(context);
+  return {
+    method: VERIFY_SIGNATURE_TOOL,
+    name: "Verify Signature",
+    description: verifySignaturePrompt(context),
+    parameters: schema as any,
+    execute: verifySignatureExecute,
+  };
+};
 
 export default tool;
